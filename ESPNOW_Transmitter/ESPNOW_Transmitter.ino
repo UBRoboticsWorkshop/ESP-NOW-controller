@@ -19,7 +19,6 @@ void setup() {
   #endif
 
   pairingStatus = PAIR_REQUEST; // Use key 0 to active it 
-  RXAddress[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
 }  
 
 void loop() {

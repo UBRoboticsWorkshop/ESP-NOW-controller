@@ -92,7 +92,6 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 }
 
 void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) { 
-
   String payload;
   uint8_t type = incomingData[0];       // Or use a switch to enable paring
   switch (type) {
@@ -108,7 +107,7 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
     printMAC(mac_addr);
     Serial.println();
     Serial.println(pairingData.channel);
-    if (pairingData.id == TxID) {     // do not replay to server itself
+    if (pairingData.id == TxID) {     // do not replay to other Tx
       pairingData.id = RxID;       // 0 is server
       pairingData.channel = chan;
       Serial.println("send response");
