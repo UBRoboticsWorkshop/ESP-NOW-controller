@@ -1,6 +1,6 @@
 #include "ESPNOW_Transmitter.h"
 
-
+ESPNOWTx espnowtx(1);
 
 void setup() {
   Serial.begin(115200);
@@ -8,17 +8,7 @@ void setup() {
   Serial.print("TX MAC Address: ");
   Serial.println(WiFi.macAddress());
 
-  #ifdef SAVE_CHANNEL 
-    EEPROM.begin(10);
-    lastChannel = EEPROM.read(0);
-    Serial.println(lastChannel);
-    if (lastChannel >= 1 && lastChannel <= MAX_CHANNEL) {
-      channel = lastChannel; 
-    }
-    Serial.println(channel);
-  #endif
-
-  pairingStatus = PAIR_REQUEST; // Use key 0 to active it 
+  espnowtx.pair(); // Use key 0 to active it 
 }  
 
 void loop() {
@@ -27,7 +17,7 @@ void loop() {
   data.rxAxis= mapAndAdjustJoystickDeadBandValues(analogRead(34), false);
   data.ryAxis= mapAndAdjustJoystickDeadBandValues(analogRead(35), false);
 
-  if (autoPairing() == PAIR_PAIRED) {
-    esp_err_t result = esp_now_send(RXAddress, (uint8_t *) &data, sizeof(data));
+  if (espnowtx.autoPairing() == 2) {
+    espnowtx.SendData(data);
   }
 }
